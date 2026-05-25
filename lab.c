@@ -8,10 +8,23 @@
 #define FORK_ERROR -1
 #define IS_A_CHILD 0
 
-int global_var = 100;
+#define GLOBAL_VALUE 100
+#define LOCAL_VALUE 200
+
+#define NEW_GLOBAL_VALUE 999
+#define NEW_LOCAL_VALUE 888
+
+#define EXIT_CODE 5
+#define SUCCESS 0
+
+#define CHILD_SLEEP_TIME 30
+#define PARENT_SLEEP_TIME 60
+
+
+int global_var = GLOBAL_VALUE;
 
 int main() {
-    int local_var = 200;
+    int local_var = LOCAL_VALUE;
 
     printf("=== Parent process (PID: %d) ===\n", getpid());
     printf("Address of global_var = %p, value = %d\n", (void*)&global_var, global_var);
@@ -31,15 +44,15 @@ int main() {
         printf("  global_var = %d at %p\n", global_var, (void*)&global_var);
         printf("  local_var  = %d at %p\n", local_var, (void*)&local_var);
 
-        global_var = 999;
-        local_var  = 888;
+        global_var = NEW_GLOBAL_VALUE;
+        local_var  = NEW_LOCAL_VALUE;
         printf("After modification in child:\n");
         printf("  global_var = %d at %p\n", global_var, (void*)&global_var);
         printf("  local_var  = %d at %p\n", local_var, (void*)&local_var);
 
-        sleep(30);
-        printf("Child exits with code 5\n");
-        exit(5);
+        sleep(CHILD_SLEEP_TIME);
+        printf("Child exits with code %d\n", EXIT_CODE);
+        exit(EXIT_CODE);
     }
     else {
         printf("\n=== Parent process (PID: %d) after fork ===\n", getpid());
@@ -47,8 +60,8 @@ int main() {
         printf("  global_var = %d at %p\n", global_var, (void*)&global_var);
         printf("  local_var  = %d at %p\n", local_var, (void*)&local_var);
 
-        printf("Parent sleeping for 30 seconds...");
-        sleep(60);
+        printf("Parent sleeping for %d seconds...", PARENT_SLEEP_TIME);
+        sleep(PARENT_SLEEP_TIME);
 
         int status;
         pid_t terminated_pid = wait(&status);
@@ -64,5 +77,5 @@ int main() {
 
     }
 
-    return 0;
+    return SUCCESS;
 }
