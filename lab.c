@@ -20,6 +20,8 @@
 #define CHILD_SLEEP_TIME 30
 #define PARENT_SLEEP_TIME 60
 
+#define WAIT_WHILE_CHILD_MODIFY_VARS 3
+
 
 int global_var = GLOBAL_VALUE;
 
@@ -55,6 +57,7 @@ int main() {
         exit(EXIT_CODE);
     }
     else {
+        sleep(WAIT_WHILE_CHILD_MODIFY_VARS);
         printf("\n=== Parent process (PID: %d) after fork ===\n", getpid());
         printf("Parent values (unchanged):\n");
         printf("  global_var = %d at %p\n", global_var, (void*)&global_var);
